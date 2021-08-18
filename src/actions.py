@@ -21,7 +21,12 @@ def card_add_place_break(card,
 
     placeCount, breakCount = get_place_break_count(uuid)
 
-    new_description = card.description + "\n---\n\n- 設置破壊数: Place: " + str(placeCount) + " / Break: " + str(breakCount)
+    cp_url = "https://admin.jaoafa.com/cp/" + uuid
+
+    if placeCount is not None:
+        new_description = card.description + "\n---\n\n- 設置破壊数: Place: " + str(placeCount) + " / Break: " + str(breakCount) + "\n" + cp_url
+    else:
+        new_description = card.description + "\n---\n\n- 設置破壊数: 取得に失敗しました。\n" + cp_url
 
     card.set_description(new_description)
 

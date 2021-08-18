@@ -68,10 +68,10 @@ def get_uuid_from_mcid(mcid: str):
 def get_place_break_count(uuid: str):
     response = requests.get("https://api.jaoafa.com/v1/world/coreprotect/" + uuid + "?info=true")
     if response.status_code != 200:
-        return None
+        return None, None
 
     result = response.json()
     if result["status"]:
         return result["data"]["place"], result["data"]["break"]
 
-    return None
+    return None, None
