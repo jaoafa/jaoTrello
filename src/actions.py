@@ -66,7 +66,7 @@ def card_created(json):
     if json["action"]["memberCreator"]["id"] == JAOTAN_ID:
         return  # jaotanによるカード作成
 
-    if json["action"]["data"]["list"]["id"] == LIST_IDS["NOT_CHECKED"]:
+    if card.list_id == LIST_IDS["NOT_CHECKED"]:
         # 状況未確認
         uuid = get_uuid_from_mcid(card.name)
         if uuid is None:
@@ -75,7 +75,7 @@ def card_created(json):
         card_add_place_break(card, uuid)
         card_add_map_image(card, uuid)
 
-    if json["action"]["data"]["list"]["id"] == LIST_IDS["DISCOVER"]:
+    if card.list_id == LIST_IDS["DISCOVER"]:
         # 発見
         uuid = get_uuid_from_mcid(card.name)
         if uuid is None:
@@ -97,7 +97,7 @@ def card_updated(json):
     if json["action"]["memberCreator"]["id"] == JAOTAN_ID:
         return  # jaotanによるカード変更
 
-    if json["action"]["data"]["list"]["id"] == LIST_IDS["DISCOVER"]:
+    if card.list_id == LIST_IDS["DISCOVER"]:
         # 発見
         uuid = get_uuid_from_mcid(card.name)
         if uuid is None:
@@ -118,7 +118,7 @@ def card_added_file(json):
     if json["action"]["memberCreator"]["id"] == JAOTAN_ID:
         return  # jaotanによるカード変更
 
-    if json["action"]["data"]["list"]["id"] == LIST_IDS["NOT_CHECKED"]:
+    if card.list_id == LIST_IDS["NOT_CHECKED"]:
         # 状況未確認
         added_filename = json["action"]["data"]["attachment"]["name"]
         if added_filename == "map.png":
