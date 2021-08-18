@@ -56,7 +56,7 @@ def card_created(json):
     """
     カード作成時に呼び出し
 
-    ・設置破壊数の取得、書き込み
+    ・設置破壊数の取得、書き込み (状況未確認・発見時)
     ・マップの添付 (状況未確認のみ)
     ・マップの削除 (発見のみ)
     """
@@ -81,14 +81,15 @@ def card_created(json):
         if uuid is None:
             return  # UUIDが取得できなかった
 
-        card_add_place_break(card, uuid)
         card_remove_map_image(card)
+        card_add_place_break(card, uuid)
 
 
 def card_updated(json):
     """
     カード変更時に呼び出し
 
+    ・設置破壊数の取得、書き込み (状況未確認・発見時)
     ・マップの削除 (発見のみ)
     """
     card_id = json["action"]["data"]["card"]["id"]
@@ -97,6 +98,14 @@ def card_updated(json):
     if json["action"]["memberCreator"]["id"] == JAOTAN_ID:
         return  # jaotanによるカード変更
 
+    if card.list_id == LIST_IDS["NOT_CHECKED"]:
+        # 状況未確認
+        uuid = get_uuid_from_mcid(card.name)
+        if uuid is None:
+            return  # UUIDが取得できなかった
+
+        card_add_place_break(card, uuid)
+
     if card.list_id == LIST_IDS["DISCOVER"]:
         # 発見
         uuid = get_uuid_from_mcid(card.name)
@@ -104,6 +113,7 @@ def card_updated(json):
             return  # UUIDが取得できなかった
 
         card_remove_map_image(card)
+        card_add_place_break(card, uuid)
 
 
 def card_added_file(json):
