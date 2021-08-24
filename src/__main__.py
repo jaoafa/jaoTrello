@@ -1,3 +1,4 @@
+import json
 import threading
 
 import uvicorn
@@ -27,7 +28,7 @@ async def post_trello_webhook(request: Request):
     POSTリクエスト時に受付
     """
     result = await request.json()
-    print("POST", result["action"]["type"], result)
+    print("POST", result["action"]["type"], json.dumps(result))
     if result["action"]["type"] == "createCard":
         actions.card_created(result)
     if result["action"]["type"] == "updateCard":
