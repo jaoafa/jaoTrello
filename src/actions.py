@@ -8,6 +8,7 @@ LIST_IDS = {
     "DISCOVER": "60816a7e6791dc5c605fb4e5",  # 発見
     "TYPE_DECISION": "60816a7e6791dc5c605fb4e6",  # 処罰種別決定
     "WORKING": "60816a7e6791dc5c605fb4e7",  # 作業中
+    "COMPLETION": "6081744d3edb972b0e3588e5",  # 完了
 }
 
 
@@ -114,6 +115,14 @@ def card_updated(json):
 
         card_remove_map_image(card)
         card_add_place_break(card, uuid)
+
+    if card.list_id == LIST_IDS["WORKING"]:
+        # 作業中 -> メンバー追加
+        card.add_member(json["action"]["memberCreator"]["id"])
+
+    if card.list_id == LIST_IDS["COMPLETION"] and len(card.idMembers) == 0:
+        # 完了 & メンバーが誰も入っていない -> メンバー追加
+        card.add_member(json["action"]["memberCreator"]["id"])
 
 
 def card_added_file(json):
