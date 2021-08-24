@@ -12,6 +12,23 @@ LIST_IDS = {
 }
 
 
+class DummyTrelloUser:
+    """
+    ダミーの Trello ユーザー
+    """
+    def __init__(self, user_id: str):
+        self.user_id = user_id
+
+    @property
+    def id(self):
+        """
+        このオブジェクトにある Trello ユーザー ID を返す
+
+        :return: Trello ユーザー ID
+        """
+        return self.user_id
+
+
 def card_add_place_break(card,
                          uuid):
     """
@@ -118,11 +135,11 @@ def card_updated(json):
 
     if card.list_id == LIST_IDS["WORKING"]:
         # 作業中 -> メンバー追加
-        card.add_member(json["action"]["memberCreator"]["id"])
+        card.add_member(DummyTrelloUser(json["action"]["memberCreator"]))
 
     if card.list_id == LIST_IDS["COMPLETION"] and len(card.idMembers) == 0:
         # 完了 & メンバーが誰も入っていない -> メンバー追加
-        card.add_member(json["action"]["memberCreator"]["id"])
+        card.add_member(DummyTrelloUser(json["action"]["memberCreator"]))
 
 
 def card_added_file(json):
