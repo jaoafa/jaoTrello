@@ -135,11 +135,11 @@ def card_updated(json):
 
     if card.list_id == LIST_IDS["WORKING"]:
         # 作業中 -> メンバー追加
-        card.add_member(DummyTrelloUser(json["action"]["memberCreator"]))
+        card.add_member(DummyTrelloUser(json["action"]["memberCreator"]["id"]))
 
     if card.list_id == LIST_IDS["COMPLETION"] and len(card.idMembers) == 0:
         # 完了 & メンバーが誰も入っていない -> メンバー追加
-        card.add_member(DummyTrelloUser(json["action"]["memberCreator"]))
+        card.add_member(DummyTrelloUser(json["action"]["memberCreator"]["id"]))
 
 
 def card_added_file(json):
